@@ -1,5 +1,6 @@
 package co.com.powerup.r2dbc;
 
+import co.com.powerup.r2dbc.repository.UserReactiveRepository;
 import org.reactivecommons.utils.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

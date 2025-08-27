@@ -1,4 +1,4 @@
-package co.com.powerup.r2dbc;
+package co.com.powerup.r2dbc.repository;
 
 import co.com.powerup.r2dbc.entity.RolEntity;
 

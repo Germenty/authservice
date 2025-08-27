@@ -4,6 +4,7 @@ import co.com.powerup.model.rol.Rol;
 import co.com.powerup.model.rol.gateways.RolRepository;
 import co.com.powerup.r2dbc.entity.RolEntity;
 import co.com.powerup.r2dbc.helper.ReactiveAdapterOperations;
+import co.com.powerup.r2dbc.repository.RolReactiveRepository;
 import org.reactivecommons.utils.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

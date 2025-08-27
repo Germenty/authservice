@@ -1,16 +1,18 @@
 server:
   port: 8080
+
 spring:
   application:
     name: "AuthService"
-  devtools:
-    add-properties: false
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/powerup
+    username: postgres
+    password: 123456789
   h2:
     console:
       enabled: true
       path: "/h2"
-  profiles:
-    include: null
+
 management:
   endpoints:
     web:
@@ -20,5 +22,6 @@ management:
     health:
       probes:
         enabled: true
+
 cors:
   allowed-origins: "http://localhost:4200,http://localhost:8080"
