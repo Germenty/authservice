@@ -4,10 +4,6 @@ server:
 spring:
   application:
     name: "AuthService"
-  r2dbc:
-    url: r2dbc:postgresql://localhost:5432/powerup
-    username: postgres
-    password: 123456789
   h2:
     console:
       enabled: true
@@ -25,3 +21,21 @@ management:
 
 cors:
   allowed-origins: "http://localhost:4200,http://localhost:8080"
+
+adapters:
+  r2dbc:
+    host: "localhost"
+    port: 5432
+    database: "powerup"
+    schema: "public"
+    username: "postgres"
+    password: "123456789"
+
+# adapters:
+#   r2dbc:
+#     host: ${DB_HOST:localhost}
+#     port: ${DB_PORT:5432}
+#     database: ${DB_NAME:powerup}
+#     schema: ${DB_SCHEMA:public}
+#     username: ${DB_USER:postgres}
+#     password: ${DB_PASSWORD:123456789}

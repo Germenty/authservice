@@ -19,7 +19,7 @@ public class RolEntity {
     @Column("uniqueid")
     private BigInteger uniqueId;
 
-    private String nombre;
-    private String descripcion;
+    private String name;
+    private String description;
 }
 
