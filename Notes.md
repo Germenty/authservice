@@ -24,3 +24,7 @@ Generar Use Case
 
 gradle guc --name User
 gradle guc --name Rol
+
+Generar Driven Adapter
+
+gradle gda --type r2dbc
