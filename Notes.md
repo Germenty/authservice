@@ -18,3 +18,9 @@ Generar Modelos
 
 gradle gm --name User
 gradle gm --name Rol
+
+
+Generar Use Case
+
+gradle guc --name User
+gradle guc --name Rol
