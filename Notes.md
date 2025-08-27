@@ -13,3 +13,8 @@ gradle ca --package=co.com.powerup --type=reactive --name=AuthService --lombok=t
 .\gradlew gep --type webflux
 
 .\gradlew bootRun
+
+Generar Modelos
+
+gradle gm --name User
+gradle gm --name Rol
