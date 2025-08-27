@@ -8,7 +8,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigInteger;
 
-@Table("roles")
+@Table("auth.roles")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

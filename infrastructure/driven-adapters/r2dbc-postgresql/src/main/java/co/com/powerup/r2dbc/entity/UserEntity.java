@@ -10,7 +10,7 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Table("users")
+@Table("auth.users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
