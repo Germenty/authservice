@@ -32,7 +32,7 @@ public record RegisterUserRequest(
         String email,
 
         @NotNull(message = "Role ID is required")
-        Long roleId, // ⚡ Recommended to only send the role ID from the request
+        Long roleId,
 
         @NotNull(message = "Base salary is required")
         @DecimalMin(value = "0.0", inclusive = false, message = "Base salary must be greater than 0")

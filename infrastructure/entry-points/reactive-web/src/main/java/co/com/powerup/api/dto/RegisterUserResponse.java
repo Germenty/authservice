@@ -19,7 +19,7 @@ public record RegisterUserResponse(
 
         String email,
 
-        String roleName, // Instead of returning the entire Rol object, return just its name or description
+        String roleName,
 
         BigDecimal baseSalary
 ) {}
