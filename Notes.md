@@ -28,3 +28,7 @@ gradle guc --name Rol
 Generar Driven Adapter
 
 gradle gda --type r2dbc
+
+Generar Entry Point
+
+gradle gep --type webflux
