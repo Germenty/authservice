@@ -1,31 +1,36 @@
 package co.com.powerup.usecase.user;
 
+import co.com.powerup.model.constants.UserConstants;
+import co.com.powerup.model.user.User;
 import co.com.powerup.model.user.gateways.UserRepository;
+import co.com.powerup.usecase.user.validation.UserValidator;
 import lombok.RequiredArgsConstructor;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import co.com.powerup.model.user.User;
 
 @RequiredArgsConstructor
 public class UserUseCase {
 
     private final UserRepository userRepository;
 
-    public Mono<User> saveUser(User user) {
-        return userRepository.save(user);
+    public Mono<User> createUser(User user) {
+        return UserValidator.validate(user)
+                .flatMap(validUser ->
+                        userRepository.findByEmail(validUser.getEmail())
+                                .flatMap(existingUser -> Mono.<User>error(new IllegalArgumentException(UserConstants.ERROR_EMAIL_EXISTS)))
+                                .switchIfEmpty(userRepository.save(validUser))
+                );
     }
 
-    public Mono<User> findUserByEmail(String email) {
+    public Mono<User> getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-    public Flux<User> findAllUsers() {
+    public Flux<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public Mono<Void> deleteUser(User user) {
+    public Mono<Void> removeUser(User user) {
         return userRepository.delete(user);
     }
-
 }

@@ -17,14 +17,24 @@ public class GlobalExceptionHandler implements WebExceptionHandler {
 
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
-        log.error("Error Global: {}", ex.getMessage(), ex);
+        log.error("Unhandled exception caught: {}", ex.getMessage(), ex);
 
-        exchange.getResponse().setStatusCode(
-                ex instanceof IllegalArgumentException ? HttpStatus.BAD_REQUEST
-                        : HttpStatus.INTERNAL_SERVER_ERROR);
+        HttpStatus status;
+        String clientMessage;
+
+        if (ex instanceof IllegalArgumentException) {
+            status = HttpStatus.BAD_REQUEST;
+            clientMessage = ex.getMessage();
+        } else {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            clientMessage = "An unexpected error occurred. Please contact support.";
+        }
+
+        exchange.getResponse().setStatusCode(status);
         exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
 
-        String body = "{\"message\":\"" + ex.getMessage() + "\"}";
+
+        String body = "{\"message\":\"" + clientMessage + "\"}";
 
         return exchange.getResponse()
                 .writeWith(Mono.just(exchange.getResponse()

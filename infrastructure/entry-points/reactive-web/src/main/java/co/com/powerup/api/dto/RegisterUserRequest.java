@@ -36,5 +36,7 @@ public record RegisterUserRequest(
 
         @NotNull(message = "Base salary is required")
         @DecimalMin(value = "0.0", inclusive = false, message = "Base salary must be greater than 0")
+        @DecimalMax(value = "15000000.0", message = "Base salary must not exceed 15,000,000")
         BigDecimal baseSalary
+
 ) {}

@@ -19,7 +19,7 @@ public class Handler {
     // GET /api/v1/users?email=xxx
     public Mono<ServerResponse> getUserByEmailUseCase(ServerRequest request) {
         String email = request.queryParam("email").orElse("");
-        return userUseCase.findUserByEmail(email)
+        return userUseCase.getUserByEmail(email)
                 .flatMap(user -> ServerResponse.ok()
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(user))
@@ -30,13 +30,13 @@ public class Handler {
     public Mono<ServerResponse> getAllUsersUseCase(ServerRequest request) {
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(userUseCase.findAllUsers(), User.class);
+                .body(userUseCase.getAllUsers(), User.class);
     }
 
     // POST /api/v1/users
     public Mono<ServerResponse> createUserUseCase(ServerRequest request) {
         return request.bodyToMono(User.class)
-                .flatMap(userUseCase::saveUser)
+                .flatMap(userUseCase::createUser)
                 .flatMap(user -> ServerResponse.ok()
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(user));
