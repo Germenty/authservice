@@ -17,7 +17,7 @@ public class Handler {
     private final UserUseCase userUseCase;
 
     // GET /api/v1/users?email=xxx
-    public Mono<ServerResponse> listenGETUseCase(ServerRequest request) {
+    public Mono<ServerResponse> getUserByEmailUseCase(ServerRequest request) {
         String email = request.queryParam("email").orElse("");
         return userUseCase.findUserByEmail(email)
                 .flatMap(user -> ServerResponse.ok()
@@ -27,14 +27,14 @@ public class Handler {
     }
 
     // GET /api/v1/users
-    public Mono<ServerResponse> listenGETOtherUseCase(ServerRequest request) {
+    public Mono<ServerResponse> getAllUsersUseCase(ServerRequest request) {
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(userUseCase.findAllUsers(), User.class);
     }
 
     // POST /api/v1/users
-    public Mono<ServerResponse> listenPOSTUseCase(ServerRequest request) {
+    public Mono<ServerResponse> createUserUseCase(ServerRequest request) {
         return request.bodyToMono(User.class)
                 .flatMap(userUseCase::saveUser)
                 .flatMap(user -> ServerResponse.ok()

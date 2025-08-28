@@ -32,3 +32,7 @@ gradle gda --type r2dbc
 Generar Entry Point
 
 gradle gep --type webflux
+
+
+test Domain
+./gradlew :usecase:test --tests "co.com.powerup.usecase.user.UserUseCaseTest"
