@@ -15,14 +15,16 @@ public class UserUseCase {
 
     public Mono<User> createUser(User user) {
         return UserValidator.validate(user)
-                .flatMap(validUser ->
-                        userRepository.findByEmail(validUser.getEmail())
-                                .flatMap(existingUser -> Mono.<User>error(new IllegalArgumentException(UserConstants.ERROR_EMAIL_EXISTS)))
-                                .switchIfEmpty(userRepository.save(validUser))
-                );
+                .flatMap(validUser -> userRepository.findByEmail(validUser.getEmail())
+                        .flatMap(existingUser -> Mono.<User>error(new IllegalArgumentException(UserConstants.ERROR_EMAIL_EXISTS)))
+                        .switchIfEmpty(userRepository.save(validUser)));
+
     }
 
     public Mono<User> getUserByEmail(String email) {
+        if (email == null || email.isBlank()) {
+            return Mono.error(new IllegalArgumentException(UserConstants.ERROR_EMAIL_REQUIRED));
+        }
         return userRepository.findByEmail(email);
     }
 

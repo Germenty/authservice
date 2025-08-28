@@ -1,6 +1,5 @@
 package co.com.powerup.model.constants;
 
-
 import java.math.BigDecimal;
 
 public final class UserConstants {
