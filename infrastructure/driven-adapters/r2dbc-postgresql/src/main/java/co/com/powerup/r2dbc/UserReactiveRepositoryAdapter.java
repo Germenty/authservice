@@ -21,11 +21,37 @@ public class UserReactiveRepositoryAdapter
 
     private static final Logger log = LoggerFactory.getLogger(UserReactiveRepositoryAdapter.class);
 
-    private final UserReactiveRepository repository;
-    private final ObjectMapper mapper;
-
     public UserReactiveRepositoryAdapter(UserReactiveRepository repository, ObjectMapper mapper) {
-        super(repository, mapper, entity -> User.builder()
+        super(repository, mapper, entity -> mapToDomain(entity));
+        this.mapper = mapper;
+        log.info("UserReactiveRepositoryAdapter initialized with repository={} and mapper={}",
+                repository.getClass().getSimpleName(), mapper.getClass().getSimpleName());
+    }
+
+    @Override
+    public Mono<User> findByEmail(String email) {
+        log.info("Searching for user by email: {}", email);
+        return repository.findByEmail(email)
+                .map(UserReactiveRepositoryAdapter::mapToDomain)
+                .doOnNext(user -> log.info("Found user: userId={}, email={}", user.getUserId(), user.getEmail()))
+                .switchIfEmpty(Mono.defer(() -> {
+                    log.info("No user found with email: {}", email);
+                    return Mono.empty();
+                }));
+    }
+
+    @Override
+    public Mono<Void> delete(User user) {
+        UUID userId = UUID.fromString(user.getUserId());
+        log.info("Deleting user: userId={}, email={}", userId, user.getEmail());
+        return repository.deleteById(userId)
+                .doOnSuccess(v -> log.info("User deleted successfully: userId={}", userId))
+                .doOnError(e -> log.error("Error deleting user: userId={}", userId, e));
+    }
+
+    // Map entity to domain
+    private static User mapToDomain(UserEntity entity) {
+        return User.builder()
                 .userId(entity.getUserId().toString())
                 .name(entity.getName())
                 .lastName(entity.getLastName())
@@ -34,31 +60,6 @@ public class UserReactiveRepositoryAdapter
                 .phoneNumber(entity.getPhoneNumber())
                 .email(entity.getEmail())
                 .baseSalary(entity.getBaseSalary())
-                .build()
-        );
-        this.repository = repository;
-        this.mapper = mapper;
-    }
-
-    @Override
-    public Mono<User> findByEmail(String email) {
-        return repository.findByEmail(email)
-                .map(entity -> User.builder()
-                        .userId(entity.getUserId().toString())
-                        .name(entity.getName())
-                        .lastName(entity.getLastName())
-                        .address(entity.getAddress())
-                        .birthDate(entity.getBirthDate())
-                        .phoneNumber(entity.getPhoneNumber())
-                        .email(entity.getEmail())
-                        .baseSalary(entity.getBaseSalary())
-                        .build()
-                );
-    }
-
-    @Override
-    public Mono<Void> delete(User user) {
-        return repository.deleteById(UUID.fromString(user.getUserId()));
+                .build();
     }
 }
-
