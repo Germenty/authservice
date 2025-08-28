@@ -39,3 +39,8 @@ adapters:
 #     schema: ${DB_SCHEMA:public}
 #     username: ${DB_USER:postgres}
 #     password: ${DB_PASSWORD:123456789}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    url: /v3/api-docs

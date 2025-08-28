@@ -43,7 +43,7 @@ class UserUseCaseTest {
 
         when(userRepository.save(any(User.class))).thenReturn(Mono.just(user));
 
-        Mono<User> result = userUseCase.saveUser(user);
+        Mono<User> result = userUseCase.createUser(user);
 
         StepVerifier.create(result)
                 .expectNextMatches(u -> u.getEmail().equals("daniel@example.com"))
@@ -62,7 +62,7 @@ class UserUseCaseTest {
 
         when(userRepository.findByEmail("daniel@example.com")).thenReturn(Mono.just(user));
 
-        Mono<User> result = userUseCase.findUserByEmail("daniel@example.com");
+        Mono<User> result = userUseCase.getUserByEmail("daniel@example.com");
 
         StepVerifier.create(result)
                 .expectNextMatches(u -> u.getName().equals("Daniel"))
@@ -75,7 +75,7 @@ class UserUseCaseTest {
     void findUserByEmail_ShouldReturnEmptyIfNotFound() {
         when(userRepository.findByEmail("notfound@example.com")).thenReturn(Mono.empty());
 
-        Mono<User> result = userUseCase.findUserByEmail("notfound@example.com");
+        Mono<User> result = userUseCase.getUserByEmail("notfound@example.com");
 
         StepVerifier.create(result)
                 .verifyComplete();
