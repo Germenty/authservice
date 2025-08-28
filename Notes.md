@@ -36,3 +36,10 @@ gradle gep --type webflux
 
 test Domain
 ./gradlew :usecase:test --tests "co.com.powerup.usecase.user.UserUseCaseTest"
+
+
+# Opción 1: Ejecutar tests normales del módulo usecase
+./gradlew :usecase:test
+
+# Opción 2: Ejecutar tests con reporte de cobertura paso a paso
+./gradlew :usecase:test :usecase:jacocoTestReport
