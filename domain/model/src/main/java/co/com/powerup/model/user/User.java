@@ -17,7 +17,6 @@ import lombok.Setter;
 @Builder(toBuilder = true)
 public class User {
 
-    private String userId;
     private String name;
     private String lastName;
     private LocalDate birthDate;

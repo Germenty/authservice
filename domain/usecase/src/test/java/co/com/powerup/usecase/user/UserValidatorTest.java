@@ -27,7 +27,6 @@ class UserValidatorTest {
     @BeforeEach
     void setUp() {
         validUser = User.builder()
-                .userId("1")
                 .name("John")
                 .lastName("Doe")
                 .birthDate(LocalDate.of(1990, 1, 1))

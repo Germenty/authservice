@@ -42,7 +42,6 @@ class UserUseCaseTest {
         userUseCase = new UserUseCase(userRepository);
 
         validUser = User.builder()
-                .userId("1")
                 .name("John")
                 .lastName("Doe")
                 .birthDate(LocalDate.of(1990, 1, 1))
@@ -54,7 +53,6 @@ class UserUseCaseTest {
                 .build();
 
         invalidUser = User.builder()
-                .userId("2")
                 .name("Jane")
                 .lastName("Smith")
                 .email("invalid-email")
@@ -88,7 +86,7 @@ class UserUseCaseTest {
         @DisplayName("Should fail when user email already exists")
         void shouldFailWhenEmailAlreadyExists() {
             // Given
-            User existingUser = validUser.toBuilder().userId("existing-id").build();
+            User existingUser = validUser.toBuilder().build();
             when(userRepository.findByEmail(validUser.getEmail()))
                     .thenReturn(Mono.just(existingUser));
 
@@ -308,7 +306,6 @@ class UserUseCaseTest {
         void shouldReturnAllUsersWhenRepositoryHasData() {
             // Given
             User anotherUser = validUser.toBuilder()
-                    .userId("2")
                     .email("jane.doe@example.com")
                     .build();
 
