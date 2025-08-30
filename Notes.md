@@ -13,3 +13,33 @@ gradle ca --package=co.com.powerup --type=reactive --name=AuthService --lombok=t
 .\gradlew gep --type webflux
 
 .\gradlew bootRun
+
+Generar Modelos
+
+gradle gm --name User
+gradle gm --name Rol
+
+
+Generar Use Case
+
+gradle guc --name User
+gradle guc --name Rol
+
+Generar Driven Adapter
+
+gradle gda --type r2dbc
+
+Generar Entry Point
+
+gradle gep --type webflux
+
+
+test Domain
+./gradlew :usecase:test --tests "co.com.powerup.usecase.user.UserUseCaseTest"
+
+
+# Opción 1: Ejecutar tests normales del módulo usecase
+./gradlew :usecase:test
+
+# Opción 2: Ejecutar tests con reporte de cobertura paso a paso
+./gradlew :usecase:test :usecase:jacocoTestReport

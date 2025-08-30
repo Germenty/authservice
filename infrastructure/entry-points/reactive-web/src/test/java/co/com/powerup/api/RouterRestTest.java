@@ -16,7 +16,7 @@ class RouterRestTest {
     private WebTestClient webTestClient;
 
     @Test
-    void testListenGETUseCase() {
+    void testGetUserByEmailUseCase() {
         webTestClient.get()
                 .uri("/api/usecase/path")
                 .accept(MediaType.APPLICATION_JSON)
@@ -30,7 +30,7 @@ class RouterRestTest {
     }
 
     @Test
-    void testListenGETOtherUseCase() {
+    void testGetAllUsersUseCase() {
         webTestClient.get()
                 .uri("/api/otherusercase/path")
                 .accept(MediaType.APPLICATION_JSON)
@@ -44,7 +44,7 @@ class RouterRestTest {
     }
 
     @Test
-    void testListenPOSTUseCase() {
+    void testCreateUserUseCase() {
         webTestClient.post()
                 .uri("/api/usecase/otherpath")
                 .accept(MediaType.APPLICATION_JSON)

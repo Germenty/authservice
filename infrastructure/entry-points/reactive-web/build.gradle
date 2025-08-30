@@ -1,7 +1,71 @@
 dependencies {
+    // Módulos hexagonales
     implementation project(':usecase')
     implementation project(':model')
+    
+    // Spring Boot WebFlux
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    
+    // Métricas
     implementation 'io.micrometer:micrometer-registry-prometheus'
+    
+    // MapStruct para mapeo de objetos
+    implementation 'org.mapstruct:mapstruct:1.6.2'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.2'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    
+    // OpenAPI/Swagger para WebFlux
+    implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.4'
+    
+    // Testing dependencies
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation 'org.mockito:mockito-junit-jupiter'
+    
+    // Para testing de validaciones
+    testImplementation 'org.springframework.boot:spring-boot-starter-validation'
+    
+    // Para testing de WebFlux controllers y integration tests
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'com.squareup.okhttp3:mockwebserver'
+    
+    // TestContainers para integration tests con BD real
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:mongodb' // Cambia según tu BD
+    
+    // AssertJ para assertions más expresivas
+    testImplementation 'org.assertj:assertj-core'
+    
+    // Para testing de métricas Actuator
+    testImplementation 'io.micrometer:micrometer-test'
+    
+    // Test dependencies para módulos
+    testImplementation project(':usecase')
+    testImplementation project(':model')
+}
+
+test {
+    useJUnitPlatform()
+    
+    // Configuración para tests reactivos
+    systemProperty 'reactor.netty.http.server.accessLogEnabled', 'true'
+    
+    // Configuración de memoria para tests
+    minHeapSize = "512m"
+    maxHeapSize = "2g"
+    
+    // Reports
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+    }
+    
+    // Para debugging de tests reactivos
+    jvmArgs '-Dreactor.trace.cancel=true'
+    jvmArgs '-Dreactor.trace.nocapacity=true'
 }
