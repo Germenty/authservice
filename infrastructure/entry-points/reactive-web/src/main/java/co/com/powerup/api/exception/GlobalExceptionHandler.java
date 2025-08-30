@@ -26,39 +26,40 @@ public class GlobalExceptionHandler implements WebExceptionHandler {
     public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
         log.error("Unhandled exception: {}", ex.getMessage(), ex);
 
+        String code;
+        String message;
+        var requestPath = exchange.getRequest().getPath().value();
         HttpStatus status;
-        String error;
 
-        if (ex instanceof IllegalArgumentException) {
-            status = HttpStatus.BAD_REQUEST;
-            error = "Bad Request";
-        } else if (ex instanceof ResourceNotFoundException) {
-            status = HttpStatus.NOT_FOUND;
-            error = "Not Found";
+        if (ex instanceof ApiException apiEx) {
+            status = apiEx.getStatus();
+            code = apiEx.getErrorCode();
+            message = apiEx.getMessage();
+
         } else {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
-            error = "Internal Server Error";
+            code = "APP_500";
+            message = "Error interno del servidor";
         }
 
-        ErrorResponse errorResponse = new ErrorResponse(
-                error,
-                ex.getMessage(),
-                status.value(),
-                exchange.getRequest().getPath().value(),
+        ErrorResponse errResp = new ErrorResponse(
+                code,
+                message,
+                requestPath,
                 LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 
         exchange.getResponse().setStatusCode(status);
         exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
 
         try {
-            byte[] bytes = objectMapper.writeValueAsBytes(errorResponse);
+            byte[] bytes = objectMapper.writeValueAsBytes(errResp);
             return exchange.getResponse()
                     .writeWith(Mono.just(exchange.getResponse()
                             .bufferFactory()
                             .wrap(bytes)));
-        } catch (Exception e) {
-            log.error("Error writing error response", e);
-            return Mono.error(e);
+        } catch (Exception writeErr) {
+            log.error("Error writing error response", writeErr);
+            return Mono.error(writeErr);
         }
     }
 }
