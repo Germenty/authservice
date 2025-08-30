@@ -44,7 +44,6 @@ public class RouterRest {
     })
     public RouterFunction<ServerResponse> routes(Handler handler) {
         return RouterFunctions.route()
-                .GET("/api/v1/users", handler::getAllUsersUseCase) // listar todos los usuarios
                 .GET("/api/v1/user", handler::getUserByEmailUseCase) // buscar por email
                 .POST("/api/v1/users", handler::createUserUseCase) // crear usuario
                 .build();
