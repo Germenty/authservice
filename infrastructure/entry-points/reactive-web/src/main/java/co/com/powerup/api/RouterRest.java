@@ -22,11 +22,6 @@ public class RouterRest {
     @Bean
     @RouterOperations({
             @RouterOperation(path = "/api/v1/users", produces = {
-                    "application/json" }, method = RequestMethod.GET, beanClass = Handler.class, beanMethod = "getAllUsersUseCase", operation = @Operation(operationId = "getAllUsers", summary = "Obtener todos los usuarios", responses = {
-                            @ApiResponse(responseCode = "200", description = "Lista de usuarios", content = @Content(schema = @Schema(implementation = User.class))),
-                            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
-                    })),
-            @RouterOperation(path = "/api/v1/user", produces = {
                     "application/json" }, method = RequestMethod.GET, beanClass = Handler.class, beanMethod = "getUserByEmailUseCase", operation = @Operation(operationId = "getUserByEmail", summary = "Buscar usuario por email", parameters = {
                             @Parameter(name = "email", description = "Email del usuario", required = true)
                     }, responses = {
@@ -37,15 +32,16 @@ public class RouterRest {
                     })),
             @RouterOperation(path = "/api/v1/users", produces = { "application/json" }, consumes = {
                     "application/json" }, method = RequestMethod.POST, beanClass = Handler.class, beanMethod = "createUserUseCase", operation = @Operation(operationId = "createUser", summary = "Crear un nuevo usuario", requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(schema = @Schema(implementation = User.class))), responses = {
-                            @ApiResponse(responseCode = "200", description = "Usuario creado", content = @Content(schema = @Schema(implementation = User.class))),
+                            @ApiResponse(responseCode = "201", description = "Usuario creado", content = @Content(schema = @Schema(implementation = User.class))),
                             @ApiResponse(responseCode = "400", description = "Datos inválidos"),
                             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
                     }))
     })
     public RouterFunction<ServerResponse> routes(Handler handler) {
         return RouterFunctions.route()
-                .GET("/api/v1/user", handler::getUserByEmailUseCase) // buscar por email
+                .GET("/api/v1/users", handler::getUserByEmailUseCase) // buscar usuario por email
                 .POST("/api/v1/users", handler::createUserUseCase) // crear usuario
                 .build();
     }
+
 }

@@ -24,6 +24,7 @@ Generar Use Case
 
 gradle guc --name User
 gradle guc --name Rol
+gradle guc --name Auth
 
 Generar Driven Adapter
 
@@ -32,6 +33,11 @@ gradle gda --type r2dbc
 Generar Entry Point
 
 gradle gep --type webflux
+
+Generate Helper
+
+gradle gh --name=JwtTokenProvider
+gradle gh --name=JwtValidacionAdapter
 
 
 test Domain
