@@ -50,5 +50,5 @@ springdoc:
 # ============================
 security:
   jwt:
-    secretKey: "c2VjcmV0LWp3dC1wb3dlcnVwLXNlY3JldC1rZXk=" # clave en Base64
+    secretKey: "2O3n1WlTtB2X6pJ5oQ7s8R9uC0FvGhIjKlMnOpQrStUvWxYz1234567890abcdef" # clave en Base64
     expiration: 3600000 # 1 hora en milisegundos

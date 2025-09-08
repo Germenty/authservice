@@ -37,7 +37,7 @@ public class RouterRest {
                             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
                     }))
     })
-    public RouterFunction<ServerResponse> routes(Handler handler) {
+    public RouterFunction<ServerResponse> userRoutes(Handler handler) {
         return RouterFunctions.route()
                 .GET("/api/v1/users", handler::getUserByEmailUseCase) // buscar usuario por email
                 .POST("/api/v1/users", handler::createUserUseCase) // crear usuario
