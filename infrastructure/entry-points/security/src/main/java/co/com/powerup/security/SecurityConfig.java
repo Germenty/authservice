@@ -23,7 +23,6 @@ import java.util.Map;
 public class SecurityConfig {
 
     private final JwtAuthenticationManager jwtAuthenticationManager;
-
     private final JwtSecurityContextRepository jwtSecurityContextRepository;
 
     @Bean
@@ -34,16 +33,23 @@ public class SecurityConfig {
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
                 .authenticationManager(jwtAuthenticationManager)
                 .securityContextRepository(jwtSecurityContextRepository)
-                .authorizeExchange(exchanges ->
-                        exchanges
-                                .pathMatchers("/api/v1/login").permitAll()
-                                .pathMatchers("/api/v1/users/email/{email}").hasRole("CLIENT")
-                                .pathMatchers("/api/v1/users/emails/batch").hasRole("ADMIN")
-                                .pathMatchers("/api/v1/users").hasRole("ADMIN")
-                                .pathMatchers("/swagger-ui.html", "/swagger-ui/**", "/webjars/**",
-                                        "/v3/api-docs", "/v3/api-docs/**").permitAll()
-                                .anyExchange().authenticated()
-                )
+                .authorizeExchange(exchanges -> exchanges
+                        // Endpoints públicos
+                        .pathMatchers("/api/v1/login").permitAll()
+                        .pathMatchers(
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/webjars/**",
+                                "/v3/api-docs",
+                                "/v3/api-docs/**")
+                        .permitAll()
+
+                        // Endpoints protegidos por rol
+                        .pathMatchers("/api/v1/users").hasRole("ADMIN") // Crear usuario
+                        .pathMatchers("/api/v1/users/**").hasRole("CLIENT") // Consultar por email
+
+                        // Lo demás requiere autenticación
+                        .anyExchange().authenticated())
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(unauthorizedHandler())
                         .accessDeniedHandler(forbiddenHandler()))
@@ -60,12 +66,11 @@ public class SecurityConfig {
             Map<String, Object> body = new HashMap<>();
             body.put("code", "AUTH_010");
             body.put("error", "No autorizado");
-            body.put("message", "No tiene credenciales validas");
+            body.put("message", "No tiene credenciales válidas");
 
             byte[] bytes = writeJson(body);
             return response.writeWith(
-                    Mono.just(response.bufferFactory().wrap(bytes))
-            );
+                    Mono.just(response.bufferFactory().wrap(bytes)));
         });
     }
 
@@ -83,8 +88,7 @@ public class SecurityConfig {
 
             byte[] bytes = writeJson(body);
             return response.writeWith(
-                    Mono.just(response.bufferFactory().wrap(bytes))
-            );
+                    Mono.just(response.bufferFactory().wrap(bytes)));
         };
     }
 
