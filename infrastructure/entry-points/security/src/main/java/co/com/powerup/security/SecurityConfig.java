@@ -45,8 +45,8 @@ public class SecurityConfig {
                                 "/v3/api-docs/**").permitAll()
 
                         // Endpoints protegidos por rol
-                        .pathMatchers(HttpMethod.POST, "/api/v1/users").hasRole("ADMIN", "CLIENT", "ADVISOR")   // Crear usuario
-                        .pathMatchers(HttpMethod.GET, "/api/v1/users").hasRole("CLIENT", "ADMIN", "ADVISOR")   // Consultar por email
+                        .pathMatchers(HttpMethod.POST, "/api/v1/users").hasAnyRole("ADMIN", "CLIENT", "ADVISOR")   // Crear usuario
+                        .pathMatchers(HttpMethod.GET, "/api/v1/users").hasAnyRole("CLIENT", "ADMIN", "ADVISOR")   // Consultar por email
 
                         // Lo demás requiere autenticación
                         .anyExchange().authenticated())
