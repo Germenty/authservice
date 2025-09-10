@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
@@ -41,12 +42,11 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/webjars/**",
                                 "/v3/api-docs",
-                                "/v3/api-docs/**")
-                        .permitAll()
+                                "/v3/api-docs/**").permitAll()
 
                         // Endpoints protegidos por rol
-                        .pathMatchers("/api/v1/users").hasRole("ADMIN") // Crear usuario
-                        .pathMatchers("/api/v1/users/**").hasRole("CLIENT") // Consultar por email
+                        .pathMatchers(HttpMethod.POST, "/api/v1/users").hasRole("ADMIN")   // Crear usuario
+                        .pathMatchers(HttpMethod.GET, "/api/v1/users").hasRole("CLIENT")   // Consultar por email
 
                         // Lo demás requiere autenticación
                         .anyExchange().authenticated())
